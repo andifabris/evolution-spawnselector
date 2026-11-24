@@ -1,0 +1,338 @@
+@font-face {
+    font-family: "RDR Lino";
+    src: url("RDRLino-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Chinese Rocks";
+    src: url("CHINESER.TTF") format("truetype");
+}
+
+:root {
+    --ivory: #f4dfb4;
+    --ivory-soft: rgba(244, 223, 180, 0.64);
+    --gold: #cda557;
+    --red: #a43129;
+    --dark: rgba(0, 0, 0, 0.66);
+    --line: rgba(244, 223, 180, 0.2);
+    --ease: cubic-bezier(0.2, 0.85, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    display: none;
+    color: var(--ivory);
+    font-family: "RDR Lino", Georgia, serif;
+    user-select: none;
+    background: transparent;
+}
+
+button {
+    font: inherit;
+    border: 0;
+}
+
+.selector {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.map-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.76), rgba(0, 0, 0, 0.08) 28%, rgba(0, 0, 0, 0.82)),
+        radial-gradient(circle at 50% 50%, transparent 0 35%, rgba(0, 0, 0, 0.72) 100%);
+}
+
+.dust {
+    display: none;
+}
+
+.spawn-shell {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(32px, 5vh, 68px);
+    z-index: 10;
+    width: min(1480px, calc(100vw - 96px));
+    transform: translateX(-50%);
+}
+
+.spawn-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+}
+
+.spawn-header span,
+.featured-region,
+.featured-count {
+    color: var(--gold);
+    font-size: clamp(10px, 1.04vh, 13px);
+    font-weight: 900;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-shadow: 0 3px 12px #000;
+}
+
+.spawn-header h1 {
+    margin: 0;
+    color: var(--ivory);
+    font-family: "Chinese Rocks", "RDR Lino", serif;
+    font-size: clamp(42px, 5.2vh, 70px);
+    line-height: 0.92;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow:
+        0 2px 0 #2a170d,
+        0 8px 28px rgba(0, 0, 0, 0.9);
+}
+
+.header-actions {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+}
+
+.selected-meta {
+    min-width: 250px;
+    text-align: right;
+}
+
+.featured-name {
+    display: block;
+    overflow: hidden;
+    color: var(--ivory);
+    font-family: "Chinese Rocks", "RDR Lino", serif;
+    font-size: clamp(24px, 2.7vh, 36px);
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: 2px;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-shadow: 0 7px 22px #000;
+}
+
+.featured-region {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--ivory-soft);
+}
+
+.featured-count {
+    display: inline-block;
+    margin-left: 10px;
+    color: var(--gold);
+    font-style: normal;
+}
+
+.last-button,
+.nav-button,
+.spawn {
+    min-height: 44px;
+    padding: 0 18px;
+    color: var(--ivory);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, 0.46);
+    border: 1px solid rgba(244, 223, 180, 0.22);
+    transition: transform 160ms var(--ease), border-color 160ms var(--ease), background 160ms var(--ease);
+}
+
+.last-button:hover,
+.nav-button:hover,
+.spawn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(205, 165, 87, 0.72);
+    background: rgba(0, 0, 0, 0.64);
+}
+
+body.is-camera-busy .last-button,
+body.is-camera-busy .nav-button,
+body.is-camera-busy .spawn,
+body.is-camera-busy .location-card,
+body.is-spawn-busy .last-button,
+body.is-spawn-busy .nav-button,
+body.is-spawn-busy .spawn,
+body.is-spawn-busy .location-card {
+    pointer-events: none;
+}
+
+body.is-camera-busy .spawn,
+body.is-spawn-busy .spawn {
+    opacity: 0.62;
+}
+
+.location-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(12px, 1.05vw, 18px);
+}
+
+.location-card {
+    position: relative;
+    min-height: clamp(230px, 29vh, 360px);
+    overflow: hidden;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.42);
+    border: 1px solid rgba(244, 223, 180, 0.16);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: cardIn 360ms var(--ease) forwards;
+    transition: transform 180ms var(--ease), border-color 180ms var(--ease), filter 180ms var(--ease);
+}
+
+.location-card:nth-child(2) { animation-delay: 45ms; }
+.location-card:nth-child(3) { animation-delay: 90ms; }
+.location-card:nth-child(4) { animation-delay: 135ms; }
+.location-card:nth-child(5) { animation-delay: 180ms; }
+
+.location-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.28) 52%, rgba(0, 0, 0, 0.82)),
+        var(--location-image) center / cover no-repeat;
+    filter: saturate(0.86) contrast(1.05);
+    transform: scale(1.01);
+    transition: transform 280ms var(--ease), filter 180ms var(--ease);
+}
+
+.location-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
+}
+
+.location-card:hover,
+.location-card.active {
+    transform: translateY(-6px);
+    border-color: rgba(244, 223, 180, 0.32);
+    filter: brightness(1.06);
+}
+
+.location-card:hover::before,
+.location-card.active::before {
+    transform: scale(1.06);
+    filter: saturate(1.05) contrast(1.08);
+}
+
+.location-card.active::after {
+    border-color: var(--gold);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 24px rgba(205, 165, 87, 0.22);
+}
+
+.location-card-content {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    z-index: 2;
+}
+
+.location-card .index {
+    display: block;
+    margin-bottom: 9px;
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.location-card h3 {
+    margin: 0;
+    color: var(--ivory);
+    font-family: "Chinese Rocks", "RDR Lino", serif;
+    font-size: clamp(22px, 2.35vh, 34px);
+    line-height: 1;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-shadow: 0 5px 18px #000;
+}
+
+.location-card p {
+    margin: 8px 0 0;
+    color: rgba(244, 223, 180, 0.66);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+}
+
+.spawn-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.spawn {
+    min-width: 220px;
+    color: #ffd8c9;
+    background: rgba(164, 49, 41, 0.78);
+}
+
+@keyframes cardIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1366px), (max-height: 760px) {
+    .spawn-shell {
+        width: calc(100vw - 52px);
+        bottom: 22px;
+    }
+
+    .spawn-header {
+        margin-bottom: 14px;
+    }
+
+    .spawn-header h1 {
+        font-size: 42px;
+    }
+
+    .location-card {
+        min-height: 204px;
+    }
+
+    .spawn-actions {
+        margin-top: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

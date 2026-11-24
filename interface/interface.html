@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seletor de Local de Entrada Evolution</title>
+    <link rel="stylesheet" href="interface.css">
+</head>
+<body>
+    <main class="selector">
+        <div class="map-vignette"></div>
+        <section class="spawn-shell">
+            <header class="spawn-header">
+                <div>
+                    <span>Selecionar chegada</span>
+                    <h1>Spawnpoint</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="last-button" type="button" data-action="lastloc" hidden>Ultimo local</button>
+                    <div class="selected-meta">
+                        <strong class="featured-name">Valentine</strong>
+                        <span class="featured-region">New Hanover</span>
+                        <em class="featured-count">01 / 05</em>
+                    </div>
+                </div>
+            </header>
+
+            <section class="location-grid" aria-label="Locais disponiveis"></section>
+
+            <footer class="spawn-actions">
+                <button class="nav-button" type="button" data-action="backward">Anterior</button>
+                <button class="spawn" type="button">Selecionar local</button>
+                <button class="nav-button" type="button" data-action="forward">Proximo</button>
+            </footer>
+        </section>
+    </main>
+    <script src="interface.js"></script>
+</body>
+</html>
